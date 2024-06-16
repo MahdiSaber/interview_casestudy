@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.math.BigDecimal;
 
 @Data
 @Embeddable

@@ -10,7 +10,9 @@ public class PriceController {
 
   @GetMapping("/prices/{accommodationId}")
   public List<?> getPrices(int accommodationId) {
-    // do your work and have fun.
+
+
+
     return null;
   }
 }

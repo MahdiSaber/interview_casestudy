@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 public class Advertiser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
@@ -19,4 +18,16 @@ public class Advertiser {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "advertiser_id")
     private List<Accommodation> accommodations;
+
+
+    public void setAccommodations(List<Accommodation> accommodations) {
+        this.accommodations = accommodations;
+        if (accommodations != null) {
+            for (Accommodation accommodation : accommodations) {
+                accommodation.setAdvertiserId(this.id);
+            }
+        }
+    }
+
+
 }

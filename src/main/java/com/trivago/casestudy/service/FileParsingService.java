@@ -12,7 +12,10 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,11 +42,29 @@ public class FileParsingService {
     }
 
     private void cleanAndSaveAdvertiser(Advertiser advertiser) {
-        List<Accommodation> cleanedAccommodations = advertiser.getAccommodations().stream()
-                .map(this::cleanAccommodation)
-                .collect(Collectors.toList());
+        List<Accommodation> cleanedAccommodations = removeDuplicateAccommodations(advertiser.getAccommodations());
         advertiser.setAccommodations(cleanedAccommodations);
         advertiserRepository.save(advertiser);
+    }
+
+    private List<Accommodation> removeDuplicateAccommodations(List<Accommodation> accommodations) {
+        Map<String, Integer> accommodationCounts = new HashMap<>();
+        accommodations.forEach(accommodation -> {
+            String uniqueKey = accommodation.getAdvertiserId() + "-" + accommodation.getId();
+            accommodationCounts.put(uniqueKey, accommodationCounts.getOrDefault(uniqueKey, 0) + 1);
+        });
+
+        Set<String> duplicateKeys = accommodationCounts.entrySet().stream()
+                .filter(entry -> entry.getValue() > 1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
+        return accommodations.stream()
+                .filter(accommodation -> {
+                    String uniqueKey = accommodation.getAdvertiserId() + "-" + accommodation.getId();
+                    return !duplicateKeys.contains(uniqueKey);
+                })
+                .collect(Collectors.toList());
     }
 
     private Accommodation cleanAccommodation(Accommodation accommodation) {
