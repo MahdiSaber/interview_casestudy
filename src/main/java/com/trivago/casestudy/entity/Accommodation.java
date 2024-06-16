@@ -18,7 +18,7 @@ public class Accommodation {
     private Long advertiserId;
 
     @ElementCollection
-    @CollectionTable(name = "item_prices", joinColumns = {
+    @CollectionTable(name = "items", joinColumns = {
             @JoinColumn(name = "advertiser_id", referencedColumnName = "advertiser_id"),
             @JoinColumn(name = "id", referencedColumnName = "id")
     })

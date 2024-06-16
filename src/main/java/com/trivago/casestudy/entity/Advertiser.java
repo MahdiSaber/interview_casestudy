@@ -19,7 +19,6 @@ public class Advertiser {
     @JoinColumn(name = "advertiser_id")
     private List<Accommodation> accommodations;
 
-
     public void setAccommodations(List<Accommodation> accommodations) {
         this.accommodations = accommodations;
         if (accommodations != null) {
@@ -28,6 +27,4 @@ public class Advertiser {
             }
         }
     }
-
-
 }
