@@ -1,6 +1,7 @@
 package com.trivago.casestudy.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,7 +15,8 @@ public class Advertiser {
     private Long id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty("accommodation")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "advertiser_id")
-    private List<Item> accommodations;
+    private List<Accommodation> accommodations;
 }
