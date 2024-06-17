@@ -3,7 +3,7 @@ package com.trivago.casestudy.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.trivago.casestudy.entity.Accommodation;
-import com.trivago.casestudy.entity.Advertiser;
+import com.trivago.casestudy.entity.Partner;
 import com.trivago.casestudy.entity.Price;
 import com.trivago.casestudy.repository.AdvertiserRepository;
 import com.trivago.casestudy.service.FileParsingService;
@@ -32,28 +32,28 @@ public class FileParsingServiceImpl implements FileParsingService {
     public void parseJsonAndSaveToDb(String jsonFilePath) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:" + jsonFilePath);
         ObjectMapper objectMapper = new ObjectMapper();
-        Advertiser advertiser = objectMapper.readValue(resource.getInputStream(), Advertiser.class);
-        cleanAndSaveAdvertiser(advertiser);
+        Partner partner = objectMapper.readValue(resource.getInputStream(), Partner.class);
+        cleanAndSaveAdvertiser(partner);
     }
 
     @Override
     public void parseYamlAndSaveToDb(String yamlFilePath) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:" + yamlFilePath);
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        Advertiser advertiser = objectMapper.readValue(resource.getInputStream(), Advertiser.class);
-        cleanAndSaveAdvertiser(advertiser);
+        Partner partner = objectMapper.readValue(resource.getInputStream(), Partner.class);
+        cleanAndSaveAdvertiser(partner);
     }
 
-    private void cleanAndSaveAdvertiser(Advertiser advertiser) {
-        List<Accommodation> cleanedAccommodations = removeDuplicateAccommodations(advertiser.getAccommodations());
-        advertiser.setAccommodations(cleanedAccommodations);
-        advertiserRepository.save(advertiser);
+    private void cleanAndSaveAdvertiser(Partner partner) {
+        List<Accommodation> cleanedAccommodations = removeDuplicateAccommodations(partner.getAccommodations());
+        partner.setAccommodations(cleanedAccommodations);
+        advertiserRepository.save(partner);
     }
 
     private List<Accommodation> removeDuplicateAccommodations(List<Accommodation> accommodations) {
         Map<String, Integer> accommodationCounts = new HashMap<>();
         accommodations.forEach(accommodation -> {
-            String uniqueKey = accommodation.getAdvertiserId() + "-" + accommodation.getId();
+            String uniqueKey = accommodation.getPartnerId() + "-" + accommodation.getId();
             accommodationCounts.put(uniqueKey, accommodationCounts.getOrDefault(uniqueKey, 0) + 1);
         });
 
@@ -64,7 +64,7 @@ public class FileParsingServiceImpl implements FileParsingService {
 
         return accommodations.stream()
                 .filter(accommodation -> {
-                    String uniqueKey = accommodation.getAdvertiserId() + "-" + accommodation.getId();
+                    String uniqueKey = accommodation.getPartnerId() + "-" + accommodation.getId();
                     return !duplicateKeys.contains(uniqueKey);
                 })
                 .collect(Collectors.toList());

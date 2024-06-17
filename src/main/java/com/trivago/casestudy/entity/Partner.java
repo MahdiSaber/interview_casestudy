@@ -9,21 +9,21 @@ import java.util.List;
 
 @Data
 @Entity
-public class Advertiser {
+public class Partner {
     @Id
     private Long id;
     private String name;
 
     @JsonProperty("accommodation")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "advertiser_id")
+    @JoinColumn(name = "partner_id")
     private List<Accommodation> accommodations;
 
     public void setAccommodations(List<Accommodation> accommodations) {
         this.accommodations = accommodations;
         if (accommodations != null) {
             for (Accommodation accommodation : accommodations) {
-                accommodation.setAdvertiserId(this.id);
+                accommodation.setPartnerId(this.id);
             }
         }
     }

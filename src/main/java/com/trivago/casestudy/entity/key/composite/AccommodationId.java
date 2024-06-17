@@ -11,7 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccommodationId implements Serializable {
-    private Long advertiserId;
+    private Long partnerId;
     private Long id;
 
     // hashCode and equals
@@ -20,12 +20,12 @@ public class AccommodationId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccommodationId that = (AccommodationId) o;
-        return Objects.equals(advertiserId, that.advertiserId) &&
+        return Objects.equals(partnerId, that.partnerId) &&
                 Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(advertiserId, id);
+        return Objects.hash(partnerId, id);
     }
 }

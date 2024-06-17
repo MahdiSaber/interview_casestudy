@@ -1,6 +1,7 @@
 package com.trivago.casestudy.exception;
 
 import com.trivago.casestudy.dto.HttpErrorResponse;
+import com.trivago.casestudy.exception.domain.AccommodationNotFoundException;
 import com.trivago.casestudy.exception.domain.PriceNegativeException;
 import com.trivago.casestudy.exception.domain.PriceNullException;
 import org.slf4j.Logger;
@@ -31,6 +32,12 @@ public class ExceptionDispatcher implements ErrorController {
         return new ResponseEntity<>(new HttpErrorResponse(httpStatus, message), httpStatus);
     }
 
+    @ExceptionHandler(AccommodationNotFoundException.class)
+    public ResponseEntity<HttpErrorResponse> accommodationNotFoundException(AccommodationNotFoundException exception) {
+        logger.error(exception.getMessage());
+        return buildErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
     @ExceptionHandler(PriceNegativeException.class)
     public ResponseEntity<HttpErrorResponse> priceNegativeException(PriceNegativeException exception) {
         logger.error(exception.getMessage());
@@ -54,7 +61,5 @@ public class ExceptionDispatcher implements ErrorController {
         logger.error(exception.getMessage());
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_ERROR);
     }
-
-
 
 }

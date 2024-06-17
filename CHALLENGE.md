@@ -15,7 +15,7 @@ The last files provided by these partners are added in resources/static/prices. 
 you to use these prices.
 
 To complete the task, you should:
-* Implement code to return price for a given accommodation from partners 100 and 200 when requested. The accommodation should be unique for each advertiser.
+* Implement code to return price for a given accommodation from partners 100 and 200 when requested. The accommodation should be unique for each partner.
 * Design your solution to be extensible for further use cases 
 * Consider possible points of failure.
 

@@ -14,12 +14,12 @@ public class Accommodation {
     private Long id;
 
     @Id
-    @Column(name = "advertiser_id")
-    private Long advertiserId;
+    @Column(name = "partner_id")
+    private Long partnerId;
 
     @ElementCollection
     @CollectionTable(name = "items", joinColumns = {
-            @JoinColumn(name = "advertiser_id", referencedColumnName = "advertiser_id"),
+            @JoinColumn(name = "partner_id", referencedColumnName = "partner_id"),
             @JoinColumn(name = "id", referencedColumnName = "id")
     })
     private List<Price> prices;
